@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table(name = "user")
 @Getter
 @Setter
-public class UserRegistrationEntity {
+public class User {
 
     @Id
     @Column

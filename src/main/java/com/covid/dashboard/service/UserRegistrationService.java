@@ -1,6 +1,6 @@
 package com.covid.dashboard.service;
 
-import com.covid.dashboard.entity.UserRegistrationEntity;
+import com.covid.dashboard.entity.User;
 import com.covid.dashboard.repository.UserRegistrationRepository;
 import com.covid.dashboard.request.UserRegistrationRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,9 +15,9 @@ public class UserRegistrationService {
 
     public void registerUser(UserRegistrationRequest userRegistrationRequest){
         ObjectMapper objectMapper = new ObjectMapper();
-        UserRegistrationEntity userRegistrationEntity = objectMapper.convertValue(userRegistrationRequest, UserRegistrationEntity.class);
-        userRegistrationEntity.setRole("ROLE_USER");
-        userRegistrationRepository.save(userRegistrationEntity);
+        User user = objectMapper.convertValue(userRegistrationRequest, User.class);
+        user.setRole("ROLE_USER");
+        userRegistrationRepository.save(user);
 
     }
 
