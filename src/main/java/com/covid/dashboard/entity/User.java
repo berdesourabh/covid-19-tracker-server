@@ -16,13 +16,16 @@ public class User {
 
     @Id
     @Column
-    private String uidNumber;
+    private String email;
 
     @Column
     private String firstName;
 
     @Column
     private String lastName;
+
+    @Column(length = 60)
+    private String password;
 
     @Column
     private String country;

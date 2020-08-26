@@ -1,7 +1,6 @@
 package com.covid.dashboard.service;
 
-import com.covid.dashboard.dto.Patient;
-import com.covid.dashboard.entity.PatientEntity;
+import com.covid.dashboard.entity.Patient;
 import com.covid.dashboard.repository.PatientRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -18,12 +17,12 @@ public class DashboardService {
     @Autowired
     private PatientRepository patientRepository;
 
-    public List<Patient> getCoronaPatientsByCountry(String country){
+    public List<com.covid.dashboard.dto.Patient> getCoronaPatientsByCountry(String country){
 
-        List<PatientEntity> patientEntities = patientRepository.findByUser_Country(country);
-        List<PatientEntity> coronaPatients = patientEntities.stream().filter(patientEntity -> patientEntity.isCoronaPositive() == true).collect(Collectors.toList());
+        List<Patient> patientEntities = patientRepository.findByUser_Country(country);
+        List<Patient> coronaPatients = patientEntities.stream().filter(patient -> patient.isCoronaPositive() == true).collect(Collectors.toList());
 
-        List<Patient> patients = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).convertValue(coronaPatients, new TypeReference<List<Patient>>() {
+        List<com.covid.dashboard.dto.Patient> patients = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).convertValue(coronaPatients, new TypeReference<List<com.covid.dashboard.dto.Patient>>() {
         });
         return patients;
 

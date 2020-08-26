@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "patient")
-public class PatientEntity {
+public class Patient {
 
     @Id
     @GeneratedValue
@@ -18,7 +18,7 @@ public class PatientEntity {
     private int patientId;
 
     @OneToOne
-    @JoinColumn(name = "uidNumber")
+    @JoinColumn(name = "email")
     private User user;
 
     @Column

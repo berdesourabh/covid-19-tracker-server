@@ -7,12 +7,13 @@ import lombok.Setter;
 @Setter
 public class UserRegistrationRequest {
 
-    private String uidNumber;
+    private String email;
     private String firstName;
     private String lastName;
     private String country;
     private String state;
     private String city;
+    private String password;
 
 
 
