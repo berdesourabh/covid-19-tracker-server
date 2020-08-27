@@ -17,10 +17,6 @@ public class DashboardController {
     @Autowired
     private DashboardService dashboardService;
 
-    @PostConstruct
-    public void postConstruct(){
-        System.exit(1);
-    }
 
     @RequestMapping(value = "/patients/country/{country}")
     public List<Patient> getCoronaPatientByCountry(@PathVariable("country") String country) {

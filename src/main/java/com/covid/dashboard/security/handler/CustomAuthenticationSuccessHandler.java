@@ -1,6 +1,5 @@
 package com.covid.dashboard.security.handler;
 
-import com.covid.dashboard.security.dto.LoginSuccessResponse;
 import com.covid.dashboard.security.dto.UserDetailInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.Authentication;
