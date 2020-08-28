@@ -9,8 +9,7 @@ import java.util.Collection;
 public class LoginResponseDto {
 
     private String userName;
-    private String phoneNumber;
-
+    private String jwtToken;
     private Collection<? extends GrantedAuthority> authorities;
 
 }
