@@ -1,4 +1,4 @@
-package com.covid.dashboard.entity;
+    package com.covid.dashboard.entity;
 
 import lombok.Getter;
 import lombok.Setter;
