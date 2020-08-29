@@ -13,14 +13,17 @@ public class PhysicianService {
     private PatientRepository patientRepository;
 
     public void addCoronaPatient(com.covid.dashboard.dto.Patient patient){
-        Patient patientEntity = new ObjectMapper().convertValue(patient, Patient.class);
-        patientRepository.save(patientEntity);
+        Patient patientEntry = patientRepository.findByUser_email(patient.getUser().getEmail());
+        if(patientEntry==null) {
+            Patient patientEntity = new ObjectMapper().convertValue(patient, Patient.class);
+            patientRepository.save(patientEntity);
+        }
     }
 
     public void updatePatientStatus(com.covid.dashboard.dto.Patient patient){
 
         Patient patientEntity = patientRepository.findByUser_email(patient.getUser().getEmail());
-        patientEntity.setCoronaPositive(patient.getIsCoronaPositive());
+        patientEntity.setCoronaPositive(patient.getCoronaPositive());
         patientRepository.save(patientEntity);
     }
 

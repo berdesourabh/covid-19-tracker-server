@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/physician")
 public class PhysicianController {
@@ -23,5 +25,15 @@ public class PhysicianController {
     public void updatePatientStatus(@RequestBody Patient patient){
         physicianService.updatePatientStatus(patient);
     }
+
+
+    @RequestMapping(value = "/addPatients",consumes = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.POST)
+    public void addCoronaPatients(@RequestBody List<Patient> patients){
+
+        patients.forEach(patient -> physicianService.addCoronaPatient(patient));
+
+    }
+
+
 
 }

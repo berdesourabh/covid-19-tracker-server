@@ -7,9 +7,10 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PreDestroy;
+import java.util.List;
 
 @RestController
-@RequestMapping("/register")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -18,10 +19,17 @@ public class UserController {
 
 
 
-    @RequestMapping(value = "/user",consumes = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.POST)
+    @RequestMapping(value = "/register",consumes = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.POST)
     public void registerUser(@RequestBody UserRegistrationRequest userRegistrationRequest){
         userService.registerUser(userRegistrationRequest);
     }
+
+
+    @RequestMapping(value = "/register/multiple",consumes = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.POST)
+    public void registerUsers(@RequestBody List<UserRegistrationRequest> userRegistrationRequests){
+        userRegistrationRequests.forEach(userRegistrationRequest -> userService.registerUser(userRegistrationRequest) );
+    }
+
 
     @PreDestroy
     public void preDestroy(){

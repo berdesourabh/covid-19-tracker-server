@@ -25,8 +25,7 @@ public class Patient {
     private String symptoms;
 
     @Column
-    @JsonProperty
-    private boolean isCoronaPositive;
+    private String coronaPositive;
 
 
 }

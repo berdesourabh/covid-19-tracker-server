@@ -38,10 +38,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests().
-                antMatchers("/register/**","/authenticate").permitAll()
+                antMatchers("/user/register/**","/login").permitAll()
                 .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/dashboard/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/dashboard/**","/addPatient").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/h2-console/**").permitAll()
+                .anyRequest().authenticated()
                 .and().formLogin().disable();
 
         http.addFilterBefore(getJwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
