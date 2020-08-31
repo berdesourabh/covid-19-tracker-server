@@ -27,5 +27,8 @@ public class Patient {
     @Column
     private String coronaPositive;
 
+    @Column
+    private boolean dead;
+
 
 }

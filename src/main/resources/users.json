@@ -1,0 +1,52 @@
+[{
+
+  "email":"abc123@gmail.com",
+  "firstName":"kunal",
+  "lastName":"Shah",
+  "country":"India",
+  "state":"Maharashtra",
+  "city":"Pune",
+  "password":"abc"
+
+},
+  {
+
+    "email":"deepak@gmail.com",
+    "firstName":"deepak",
+    "lastName":"Shah",
+    "country":"India",
+    "state":"Maharashtra",
+    "city":"Mumbai",
+    "password":"abc"
+
+  },
+
+  {
+
+    "email":"rahul@gmail.com",
+    "firstName":"rahul",
+    "lastName":"Shah",
+    "country":"India",
+    "state":"Delhi",
+    "city":"Delhi",
+    "password":"abc"
+
+  },
+
+
+
+  {
+
+    "email":"anjali@gmail.com",
+    "firstName":"anjali",
+    "lastName":"Shah",
+    "country":"India",
+    "state":"Madhya Pradesh",
+    "city":"Bhopal",
+    "password":"abc"
+
+  }
+
+
+
+]

@@ -1,0 +1,58 @@
+[
+
+
+  {
+
+
+    "user":{
+      "email":"abc123@gmail.com"
+
+    },
+    "coronaPositive":"Y",
+    "symptoms":"fever"
+
+
+
+  },
+  {
+
+
+    "user":{
+      "email":"deepak@gmail.com"
+
+    },
+    "coronaPositive":"Y",
+    "symptoms":"fever"
+
+
+
+  },
+
+  {
+
+
+    "user":{
+      "email":"rahul@gmail.com"
+
+    },
+    "coronaPositive":"Y",
+    "symptoms":"fever"
+
+
+
+  },
+  {
+
+
+    "user":{
+      "email":"anjali@gmail.com"
+
+    },
+    "coronaPositive":"Y",
+    "symptoms":"fever"
+
+
+
+  }
+
+]

@@ -32,7 +32,7 @@ public class UserService {
         RandomString randomString = new RandomString();
         String randomStr = randomString.make(60);
         user.setVerificationCode(randomStr);
-        user.setEnabled(false);
+        user.setEnabled(true);
         userRepository.save(user);
 
         com.covid.dashboard.dto.User userDto = new com.covid.dashboard.dto.User();
@@ -40,8 +40,8 @@ public class UserService {
         userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
         userDto.setVerificationCode(randomStr);
-        String url = "http://"+httpServletRequest.getHeader("host")+"/user/verify";
-        verificationEmailService.sendVerificationEmail(url,userDto);
+  //      String url = "http://"+httpServletRequest.getHeader("host")+"/user/verify";
+//        verificationEmailService.sendVerificationEmail(url,userDto);
 
 
     }

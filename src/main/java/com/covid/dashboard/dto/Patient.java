@@ -16,5 +16,7 @@ public class Patient {
 
     private String symptoms;
 
+    private boolean dead;
+
 
 }

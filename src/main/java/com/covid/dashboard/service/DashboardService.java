@@ -1,5 +1,6 @@
 package com.covid.dashboard.service;
 
+import com.covid.dashboard.dto.CoronaReport;
 import com.covid.dashboard.entity.Patient;
 import com.covid.dashboard.repository.PatientRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -21,7 +22,7 @@ public class DashboardService {
     public List<com.covid.dashboard.dto.Patient> getCoronaPatientsByCountry(String country) {
 
         List<Patient> patientEntities = patientRepository.findByUser_Country(country);
-        List<com.covid.dashboard.dto.Patient> patients = getCoronaPatients(patientEntities);
+        List<com.covid.dashboard.dto.Patient> patients = getPatients(patientEntities);
         return patients;
 
     }
@@ -29,38 +30,44 @@ public class DashboardService {
 
     public List<com.covid.dashboard.dto.Patient> getCoronaPatientsByCountryAndState(String country, String state) {
         List<Patient> patients = patientRepository.findByUser_CountryAndUser_State(country, state);
-        List<com.covid.dashboard.dto.Patient> patientsList = getCoronaPatients(patients);
+        List<com.covid.dashboard.dto.Patient> patientsList = getPatients(patients);
         return patientsList;
     }
 
     public List<com.covid.dashboard.dto.Patient> getCoronaPatientsByCountryAndStateAndCity(String country, String state, String city) {
         List<Patient> patients = patientRepository.findByUser_CountryAndUser_StateAndUser_City(country, state, city);
-        List<com.covid.dashboard.dto.Patient> patientsList = getCoronaPatients(patients);
+        List<com.covid.dashboard.dto.Patient> patientsList = getPatients(patients);
         return patientsList;
     }
 
-    private List<com.covid.dashboard.dto.Patient> getCoronaPatients(List<Patient> patientEntities) {
-        List<Patient> coronaPatients = patientEntities.stream().filter(patient -> "Y".equals(patient.getCoronaPositive())).collect(Collectors.toList());
+    private List<com.covid.dashboard.dto.Patient> getPatients(List<Patient> patientEntities) {
+        //List<Patient> coronaPatients = patientEntities.stream().filter(patient -> "Y".equals(patient.getCoronaPositive())).collect(Collectors.toList());
 
-        return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).convertValue(coronaPatients, new TypeReference<List<com.covid.dashboard.dto.Patient>>() {
+        List<Patient> patients = patientEntities.stream().collect(Collectors.toList());
+
+        return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).convertValue(patients, new TypeReference<List<com.covid.dashboard.dto.Patient>>() {
         });
     }
 
-    public int getCoronaPatientsCount(String country,String state,String city) {//queryString = " country=India&state=maha&city=pune "
+    public CoronaReport getCoronaPatientsCount(String country, String state, String city) {//queryString = " country=India&state=maha&city=pune "
 
-
+        CoronaReport coronaReport = new CoronaReport();
+        List<com.covid.dashboard.dto.Patient> patients;
 
         if (StringUtils.hasText(country) && StringUtils.hasText(state) && StringUtils.hasText(city)) {
-            List<com.covid.dashboard.dto.Patient> coronaPatientsByCountryAndStateAndCity = getCoronaPatientsByCountryAndStateAndCity(country, state, city);
-            return coronaPatientsByCountryAndStateAndCity.size();
+            patients = getCoronaPatientsByCountryAndStateAndCity(country, state, city);
         } else if (StringUtils.hasText(country) && StringUtils.hasText(state)) {
-            List<com.covid.dashboard.dto.Patient> coronaPatientsByCountryAndState = getCoronaPatientsByCountryAndState(country, state);
-            return coronaPatientsByCountryAndState.size();
+            patients = getCoronaPatientsByCountryAndState(country, state);
         } else {
-            List<com.covid.dashboard.dto.Patient> coronaPatientsByCountry = getCoronaPatientsByCountry(country);
-            return coronaPatientsByCountry.size();
+            patients = getCoronaPatientsByCountry(country);
         }
-
+        long totalCoronaCases = patients.stream().filter(patient -> patient.getCoronaPositive().equals("Y")).count();
+        long totalRecovered = patients.stream().filter(patient -> patient.getCoronaPositive().equals("N")).count();
+        long totalDeaths = patients.stream().filter(patient -> patient.isDead()).count();
+        coronaReport.setCoronaCases(totalCoronaCases);
+        coronaReport.setTotalRecovered(totalRecovered);
+        coronaReport.setTotalDeaths(totalDeaths);
+        return coronaReport;
 
     }
 

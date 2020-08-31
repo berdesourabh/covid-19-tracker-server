@@ -1,19 +1,18 @@
 package com.covid.dashboard.controller;
 
+import com.covid.dashboard.dto.CoronaReport;
 import com.covid.dashboard.dto.Patient;
 import com.covid.dashboard.service.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.bind.DefaultValue;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
 
 @RestController
 @RequestMapping("/dashboard")
+@CrossOrigin(origins = "*")
 public class DashboardController {
 
     @Autowired
@@ -39,7 +38,7 @@ public class DashboardController {
     }
 
     @RequestMapping(value = "/patients")
-    public int getCoronaPatientsCounty(@RequestParam(value = "country",required = false)String country, @RequestParam(value = "state",required = false)String state, @RequestParam(value = "city",required = false)String city) {
+    public CoronaReport getCoronaPatientsData(@RequestParam(value = "country",required = false)String country, @RequestParam(value = "state",required = false)String state, @RequestParam(value = "city",required = false)String city) {
 
         return dashboardService.getCoronaPatientsCount(country,state,city);
 
