@@ -29,6 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             UserDetailInfo userDetailInfo = new UserDetailInfo();
             userDetailInfo.setUsername(user.getEmail());
             userDetailInfo.setPassword(user.getPassword());
+            userDetailInfo.setEnabled(user.isEnabled());
             userDetailInfo.setAuthorities(Arrays.asList(new SimpleGrantedAuthority(user.getRole())));
             return userDetailInfo;
         }

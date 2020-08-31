@@ -38,4 +38,10 @@ public class User {
 
     @Column
     private String role;
+
+    @Column
+    private String verificationCode;
+
+    @Column
+    private boolean enabled;
 }

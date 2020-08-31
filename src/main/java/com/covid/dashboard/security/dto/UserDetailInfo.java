@@ -10,6 +10,7 @@ public class UserDetailInfo implements UserDetails {
 
     private String username;
     private String password;
+    private boolean enabled;
     private Collection<? extends GrantedAuthority> authorities;
 
     @Override
@@ -44,7 +45,7 @@ public class UserDetailInfo implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     public void setUsername(String username) {
@@ -57,5 +58,9 @@ public class UserDetailInfo implements UserDetails {
 
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

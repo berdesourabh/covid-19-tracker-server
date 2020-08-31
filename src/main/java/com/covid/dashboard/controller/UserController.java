@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PreDestroy;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -20,14 +21,20 @@ public class UserController {
 
 
     @RequestMapping(value = "/register",consumes = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.POST)
-    public void registerUser(@RequestBody UserRegistrationRequest userRegistrationRequest){
-        userService.registerUser(userRegistrationRequest);
+    public void registerUser(@RequestBody UserRegistrationRequest userRegistrationRequest, HttpServletRequest httpServletRequest){
+        userService.registerUser(userRegistrationRequest,httpServletRequest);
     }
 
 
     @RequestMapping(value = "/register/multiple",consumes = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.POST)
-    public void registerUsers(@RequestBody List<UserRegistrationRequest> userRegistrationRequests){
-        userRegistrationRequests.forEach(userRegistrationRequest -> userService.registerUser(userRegistrationRequest) );
+    public void registerUsers(@RequestBody List<UserRegistrationRequest> userRegistrationRequests,HttpServletRequest httpServletRequest){
+        userRegistrationRequests.forEach(userRegistrationRequest -> userService.registerUser(userRegistrationRequest,httpServletRequest) );
+    }
+
+
+    @RequestMapping(value = "/verify",method = RequestMethod.GET)
+    public String verifyUser(@RequestParam("code")String code){
+        return userService.verifyUser(code);
     }
 
 
