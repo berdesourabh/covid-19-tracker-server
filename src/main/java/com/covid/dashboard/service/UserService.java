@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -22,6 +24,8 @@ public class UserService {
 
     @Autowired
     private VerificationEmailService verificationEmailService;
+
+
 
     public void registerUser(UserRegistrationRequest userRegistrationRequest, HttpServletRequest httpServletRequest){
         ObjectMapper objectMapper = new ObjectMapper();
@@ -46,6 +50,7 @@ public class UserService {
 
     }
 
+
     public String verifyUser(String verificationCode) {
         String message = "";
         User user = userRepository.findUserByVerificationCode(verificationCode);
@@ -56,5 +61,6 @@ public class UserService {
         }
         return "User already verified";
     }
+
 
 }
