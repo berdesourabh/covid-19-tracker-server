@@ -1,8 +1,11 @@
 package com.covid.dashboard.service;
 
+import com.covid.dashboard.dto.CoronaData;
 import com.covid.dashboard.dto.CoronaReport;
 import com.covid.dashboard.entity.Patient;
 import com.covid.dashboard.repository.PatientRepository;
+import com.covid.dashboard.repository.RegionRepository;
+import com.covid.dashboard.repository.UserRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +22,9 @@ public class DashboardService {
 
     @Autowired
     private PatientRepository patientRepository;
+
+    @Autowired
+    private RegionRepository regionRepository;
 
     public List<com.covid.dashboard.dto.Patient> getCoronaPatientsByCountry(String country) {
 
@@ -57,57 +64,93 @@ public class DashboardService {
 
     }
 
-    public CoronaReport getCoronaPatientsCount(String country, String state, String city) {//queryString = " country=India&state=maha&city=pune "
+    public List<CoronaReport> getCoronaPatientsCount(String country, String state, String city) {//queryString = " country=India&state=maha&city=pune "
 
-        CoronaReport coronaReport = new CoronaReport();
+        List<CoronaReport> coronaReports = new ArrayList<>();
         List<com.covid.dashboard.dto.Patient> patients;
 
         if (StringUtils.hasText(country) && StringUtils.hasText(state) && StringUtils.hasText(city)) {
+            CoronaReport coronaReport = new CoronaReport();
+            coronaReport.setCountry(country);
+            coronaReport.setState(state);
+            coronaReport.setCity(city);
+            CoronaData coronaData = new CoronaData();
             //patients = getCoronaPatientsByCountryAndStateAndCity(country, state, city);
             long totalCoronaCases = patientRepository.countByCoronaPositiveAndUser_CountryAndUser_StateAndUser_city("Y",country,
                     state,city);
             long totalRecovered =patientRepository.countByCoronaPositiveAndUser_CountryAndUser_StateAndUser_city("N",country,
                     state,city);
             long totalDeaths = patientRepository.countByDeadAndUser_CountryAndUser_StateAndUser_city(true,country,state,city);
-            coronaReport.setCoronaCases(totalCoronaCases);
-            coronaReport.setTotalRecovered(totalRecovered);
-            coronaReport.setTotalDeaths(totalDeaths);
-            return coronaReport;
+            coronaData.setCoronaCases(totalCoronaCases);
+            coronaData.setTotalRecovered(totalRecovered);
+            coronaData.setTotalDeaths(totalDeaths);
+            coronaReport.setCoronaData(coronaData);
+            coronaReports.add(coronaReport);
+            return coronaReports;
 
 
         } else if (StringUtils.hasText(country) && StringUtils.hasText(state)) {
             //patients = getCoronaPatientsByCountryAndState(country, state);
+            CoronaReport coronaReport = new CoronaReport();
+            coronaReport.setCountry(country);
+            coronaReport.setState(state);
+            coronaReport.setCity(city);
+            CoronaData coronaData = new CoronaData();
+
             long totalCoronaCases = patientRepository.countByCoronaPositiveAndUser_CountryAndUser_State("Y",country,
                     state);
             long totalRecovered =patientRepository.countByCoronaPositiveAndUser_CountryAndUser_State("N",country,
                     state);
             long totalDeaths = patientRepository.countByDeadAndUser_CountryAndUser_State(true,country,state);
-            coronaReport.setCoronaCases(totalCoronaCases);
-            coronaReport.setTotalRecovered(totalRecovered);
-            coronaReport.setTotalDeaths(totalDeaths);
-            return coronaReport;
+            coronaData.setCoronaCases(totalCoronaCases);
+            coronaData.setTotalRecovered(totalRecovered);
+            coronaData.setTotalDeaths(totalDeaths);
+            coronaReport.setCoronaData(coronaData);
+            coronaReports.add(coronaReport);
+            return coronaReports;
 
 
         } else {
             if ("All".equals(country)) {
                 //patients = getAllPatients();
 
-                long totalCoronaCases = patientRepository.getAllCoronaPatientCount();
-                long totalRecovered = patientRepository.getAllRecoveredPatientsCount();
-                long totalDeaths = patientRepository.getAllDeathPatientsCount();
-                coronaReport.setCoronaCases(totalCoronaCases);
-                coronaReport.setTotalRecovered(totalRecovered);
-                coronaReport.setTotalDeaths(totalDeaths);
-                return coronaReport;
+
+                List<String> countries = regionRepository.getAllCountries();
+
+                countries.forEach(c -> {
+
+                    CoronaReport coronaReport = new CoronaReport();
+                    coronaReport.setCountry(c);
+                    coronaReport.setState(state);
+                    coronaReport.setCity(city);
+                    CoronaData coronaData = new CoronaData();
+                    long totalCoronaCases = patientRepository.countByCoronaPositiveAndUser_Country("Y",c);
+                    long totalRecovered =patientRepository.countByCoronaPositiveAndUser_Country("N",c);
+                    long totalDeaths = patientRepository.countByDeadAndUser_Country(true,c);
+                    coronaData.setCoronaCases(totalCoronaCases);
+                    coronaData.setTotalRecovered(totalRecovered);
+                    coronaData.setTotalDeaths(totalDeaths);
+                    coronaReport.setCoronaData(coronaData);
+                    coronaReports.add(coronaReport);
+                });
+
+               return coronaReports;
             } else {
                 // = getCoronaPatientsByCountry(country);
+                CoronaReport coronaReport = new CoronaReport();
+                coronaReport.setCountry(country);
+                coronaReport.setState(state);
+                coronaReport.setCity(city);
+                CoronaData coronaData = new CoronaData();
                 long totalCoronaCases = patientRepository.countByCoronaPositiveAndUser_Country("Y",country);
                 long totalRecovered =patientRepository.countByCoronaPositiveAndUser_Country("N",country);
                 long totalDeaths = patientRepository.countByDeadAndUser_Country(true,country);
-                coronaReport.setCoronaCases(totalCoronaCases);
-                coronaReport.setTotalRecovered(totalRecovered);
-                coronaReport.setTotalDeaths(totalDeaths);
-                return coronaReport;
+                coronaData.setCoronaCases(totalCoronaCases);
+                coronaData.setTotalRecovered(totalRecovered);
+                coronaData.setTotalDeaths(totalDeaths);
+                coronaReport.setCoronaData(coronaData);
+                coronaReports.add(coronaReport);
+                return coronaReports;
             }
         }
 

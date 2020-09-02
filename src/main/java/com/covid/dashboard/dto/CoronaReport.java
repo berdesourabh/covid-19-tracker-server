@@ -5,9 +5,11 @@ import lombok.Data;
 @Data
 public class CoronaReport {
 
-    private long coronaCases;
-    private long totalRecovered;
-    private long totalDeaths;
+    private String country;
+    private String state;
+    private String city;
+    private CoronaData coronaData;
+
 
 
 }
