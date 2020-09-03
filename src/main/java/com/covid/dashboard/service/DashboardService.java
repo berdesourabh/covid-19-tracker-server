@@ -1,7 +1,6 @@
 package com.covid.dashboard.service;
 
-import com.covid.dashboard.dto.CoronaData;
-import com.covid.dashboard.dto.CoronaReport;
+import com.covid.dashboard.dto.*;
 import com.covid.dashboard.entity.Patient;
 import com.covid.dashboard.repository.PatientRepository;
 import com.covid.dashboard.repository.RegionRepository;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,16 +64,23 @@ public class DashboardService {
 
     }
 
-    public List<CoronaReport> getCoronaPatientsCount(String country, String state, String city) {//queryString = " country=India&state=maha&city=pune "
+    public CoronaReport getCoronaPatientsCount(String country, String state, String city) {//queryString = " country=India&state=maha&city=pune "
 
-        List<CoronaReport> coronaReports = new ArrayList<>();
+        CoronaReport coronaReport = new CoronaReport();
+        List<CountryReport> countryReports = new ArrayList<>();
+
         List<com.covid.dashboard.dto.Patient> patients;
 
         if (StringUtils.hasText(country) && StringUtils.hasText(state) && StringUtils.hasText(city)) {
-            CoronaReport coronaReport = new CoronaReport();
-            coronaReport.setCountry(country);
-            coronaReport.setState(state);
-            coronaReport.setCity(city);
+
+            CountryReport countryReport = new CountryReport();
+            countryReport.setName(country);
+            StateReport stateReport = new StateReport();
+            stateReport.setName(state);
+
+            CityReport cityReport = new CityReport();
+            cityReport.setCityName(city);
+
             CoronaData coronaData = new CoronaData();
             //patients = getCoronaPatientsByCountryAndStateAndCity(country, state, city);
             long totalCoronaCases = patientRepository.countByCoronaPositiveAndUser_CountryAndUser_StateAndUser_city("Y",country,
@@ -84,19 +91,25 @@ public class DashboardService {
             coronaData.setCoronaCases(totalCoronaCases);
             coronaData.setTotalRecovered(totalRecovered);
             coronaData.setTotalDeaths(totalDeaths);
-            coronaReport.setCoronaData(coronaData);
-            coronaReports.add(coronaReport);
-            return coronaReports;
+            cityReport.setCoronaData(coronaData);
+            stateReport.setCityReports(Collections.singletonList(cityReport));
+            countryReport.setStateReports(Collections.singletonList(stateReport));
+            countryReports.add(countryReport);
 
 
         } else if (StringUtils.hasText(country) && StringUtils.hasText(state)) {
             //patients = getCoronaPatientsByCountryAndState(country, state);
+            CountryReport countryReport = new CountryReport();
+            countryReport.setName(country);
+            List<CityReport> cityReports = new ArrayList<>();
+            StateReport stateReport = new StateReport();
+            stateReport.setName(state);
             List<String> cities = regionRepository.getCitiesByCountryAndState(country, state);
             cities.forEach(c -> {
-                CoronaReport coronaReport = new CoronaReport();
-                coronaReport.setCountry(country);
-                coronaReport.setState(state);
-                coronaReport.setCity(c);
+
+
+                CityReport cityReport = new CityReport();
+                cityReport.setCityName(c);
                 CoronaData coronaData = new CoronaData();
 
                 long totalCoronaCases = patientRepository.countByCoronaPositiveAndUser_CountryAndUser_StateAndUser_city("Y",country,state,c);
@@ -106,12 +119,13 @@ public class DashboardService {
                 coronaData.setCoronaCases(totalCoronaCases);
                 coronaData.setTotalRecovered(totalRecovered);
                 coronaData.setTotalDeaths(totalDeaths);
-                coronaReport.setCoronaData(coronaData);
-                coronaReports.add(coronaReport);
+                cityReport.setCoronaData(coronaData);
+                cityReports.add(cityReport);
 
             });
-
-            return coronaReports;
+            stateReport.setCityReports(cityReports);
+            countryReport.setStateReports(Collections.singletonList(stateReport));
+            countryReports.add(countryReport);
 
 
         } else {
@@ -123,10 +137,8 @@ public class DashboardService {
 
                 countries.forEach(c -> {
 
-                    CoronaReport coronaReport = new CoronaReport();
-                    coronaReport.setCountry(c);
-                    coronaReport.setState(state);
-                    coronaReport.setCity(city);
+                    CountryReport countryReport = new CountryReport();
+                    countryReport.setName(c);
                     CoronaData coronaData = new CoronaData();
                     long totalCoronaCases = patientRepository.countByCoronaPositiveAndUser_Country("Y",c);
                     long totalRecovered =patientRepository.countByCoronaPositiveAndUser_Country("N",c);
@@ -134,21 +146,22 @@ public class DashboardService {
                     coronaData.setCoronaCases(totalCoronaCases);
                     coronaData.setTotalRecovered(totalRecovered);
                     coronaData.setTotalDeaths(totalDeaths);
-                    coronaReport.setCoronaData(coronaData);
-                    coronaReports.add(coronaReport);
+                    countryReport.setCoronaData(coronaData);
+                    countryReports.add(countryReport);
                 });
 
-               return coronaReports;
             } else {
                 // = getCoronaPatientsByCountry(country);
+
+                CountryReport countryReport = new CountryReport();
+                countryReport.setName(country);
+                List<StateReport> stateReports = new ArrayList<>();
 
                 List<String> states = regionRepository.getStatesByCountry(country);
 
                 states.forEach(s -> {
-                    CoronaReport coronaReport = new CoronaReport();
-                    coronaReport.setCountry(country);
-                    coronaReport.setState(s);
-                    coronaReport.setCity(city);
+                    StateReport stateReport = new StateReport();
+                    stateReport.setName(s);
                     CoronaData coronaData = new CoronaData();
 
                     long totalCoronaCases = patientRepository.countByCoronaPositiveAndUser_CountryAndUser_State("Y",country,s);
@@ -157,17 +170,18 @@ public class DashboardService {
                     coronaData.setCoronaCases(totalCoronaCases);
                     coronaData.setTotalRecovered(totalRecovered);
                     coronaData.setTotalDeaths(totalDeaths);
-                    coronaReport.setCoronaData(coronaData);
-                    coronaReports.add(coronaReport);
-
+                    stateReport.setCoronaData(coronaData);
+                    stateReports.add(stateReport);
+                    countryReports.add(countryReport);
                         });
+                countryReport.setStateReports(stateReports);
 
 
-                return coronaReports;
+
             }
         }
-
-
+        coronaReport.setCountryReports(countryReports);
+        return coronaReport;
     }
 
 

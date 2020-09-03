@@ -38,7 +38,7 @@ public class DashboardController {
     }
 
     @RequestMapping(value = "/patients")
-    public List<CoronaReport> getCoronaPatientsData(@RequestParam(value = "country",required = false)String country, @RequestParam(value = "state",required = false)String state, @RequestParam(value = "city",required = false)String city) {
+    public CoronaReport getCoronaPatientsData(@RequestParam(value = "country",required = false)String country, @RequestParam(value = "state",required = false)String state, @RequestParam(value = "city",required = false)String city) {
 
         return dashboardService.getCoronaPatientsCount(country,state,city);
 
