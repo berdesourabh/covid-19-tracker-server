@@ -69,14 +69,14 @@ public class DummyUserUtil {
         Map<String,String[]> englandStateCityMap = new HashMap();
         englandStateCityMap.put("London",new String[]{"Camden","Haringey"});
         englandStateCityMap.put("Cambridgeshire",new String[]{"Cambridge","Royston"});
-        countryMap.put("England",englandStateCityMap);
+        countryMap.put("United Kingdom",englandStateCityMap);
 
         Map<String,String[]> unitedStatesStatesMap = new HashMap();
         unitedStatesStatesMap.put("California",new String[]{"Los Angeles","San Diego","San Francisco"});
         unitedStatesStatesMap.put("Texas",new String[]{"Houston","Austin"});
         countryMap.put("United States",unitedStatesStatesMap);
 
-        String countries[] = {"India","England","United States"};
+        String countries[] = {"India","United Kingdom","United States"};
         Random random = new Random();
         List<User> userEntities = new ArrayList<>();
         String encodedPassword = passwordEncoder.encode("abc");

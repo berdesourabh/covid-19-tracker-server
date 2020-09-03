@@ -1,6 +1,9 @@
 package com.covid.dashboard.controller;
 
 
+import com.covid.dashboard.dto.City;
+import com.covid.dashboard.dto.Country;
+import com.covid.dashboard.dto.State;
 import com.covid.dashboard.service.RegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,17 +19,17 @@ public class RegionController {
     private RegionService regionService;
 
     @GetMapping("/countries")
-    public List<String> getAllCountries(){
+    public List<Country> getAllCountries(){
         return regionService.getAllCountries();
     }
 
     @GetMapping("/states/{country}")
-    public List<String> getStatesByCountry(@PathVariable("country") String country){
+    public List<State> getStatesByCountry(@PathVariable("country") String country){
         return regionService.getStatesByContry(country);
     }
 
     @GetMapping("/cities/{country}/{state}")
-    public List<String> getCitiesByCountryAndState(@PathVariable("country") String country,@PathVariable("state") String state){
+    public List<City> getCitiesByCountryAndState(@PathVariable("country") String country, @PathVariable("state") String state){
         return regionService.getCitiesByCountryAndState(country,state);
     }
 }
