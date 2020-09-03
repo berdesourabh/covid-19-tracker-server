@@ -172,9 +172,10 @@ public class DashboardService {
                     coronaData.setTotalDeaths(totalDeaths);
                     stateReport.setCoronaData(coronaData);
                     stateReports.add(stateReport);
-                    countryReports.add(countryReport);
                         });
+
                 countryReport.setStateReports(stateReports);
+                countryReports.add(countryReport);
 
 
 
