@@ -1,5 +1,6 @@
 package com.covid.dashboard.controller;
 
+import com.covid.dashboard.dto.User;
 import com.covid.dashboard.dto.UserRegisterResponse;
 import com.covid.dashboard.request.UserRegistrationRequest;
 import com.covid.dashboard.service.UserService;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
@@ -40,6 +42,11 @@ public class UserController {
     }
 
 
+
+    @RequestMapping(value = "/{firstName}",method = RequestMethod.GET)
+    public List<User> getAllUsersStartsWithFirstName(@PathVariable("firstName")String firstName){
+        return userService.getUsersStartWithFirstName(firstName);
+    }
     @PreDestroy
     public void preDestroy(){
         System.out.println("Destroying...");

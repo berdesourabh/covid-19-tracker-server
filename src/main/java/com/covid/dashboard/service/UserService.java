@@ -1,9 +1,12 @@
 package com.covid.dashboard.service;
 
+import com.covid.dashboard.dto.Patient;
 import com.covid.dashboard.dto.UserRegisterResponse;
 import com.covid.dashboard.entity.User;
 import com.covid.dashboard.repository.UserRepository;
 import com.covid.dashboard.request.UserRegistrationRequest;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +67,14 @@ public class UserService {
             return "Successfully Verified User";
         }
         return "User already verified";
+    }
+
+    public List<com.covid.dashboard.dto.User> getUsersStartWithFirstName(String name){
+        List<User> users = userRepository.findFirst10UserByFirstNameStartsWith(name);
+        List<com.covid.dashboard.dto.User> usersDto = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).convertValue(users, new TypeReference<List<com.covid.dashboard.dto.User>>() {
+        });
+        usersDto.stream().forEach(user -> user.setPassword("ENCRYPTED**************"));
+        return usersDto;
     }
 
 
