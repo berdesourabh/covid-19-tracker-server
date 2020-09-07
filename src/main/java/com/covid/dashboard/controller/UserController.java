@@ -1,5 +1,6 @@
 package com.covid.dashboard.controller;
 
+import com.covid.dashboard.dto.UserRegisterResponse;
 import com.covid.dashboard.request.UserRegistrationRequest;
 import com.covid.dashboard.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ public class UserController {
 
 
     @RequestMapping(value = "/register",consumes = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.POST)
-    public void registerUser(@RequestBody UserRegistrationRequest userRegistrationRequest, HttpServletRequest httpServletRequest){
-        userService.registerUser(userRegistrationRequest,httpServletRequest);
+    public UserRegisterResponse registerUser(@RequestBody UserRegistrationRequest userRegistrationRequest, HttpServletRequest httpServletRequest){
+        return userService.registerUser(userRegistrationRequest,httpServletRequest);
     }
 
 

@@ -1,5 +1,6 @@
 package com.covid.dashboard.service;
 
+import com.covid.dashboard.dto.UserRegisterResponse;
 import com.covid.dashboard.entity.User;
 import com.covid.dashboard.repository.UserRepository;
 import com.covid.dashboard.request.UserRegistrationRequest;
@@ -27,7 +28,7 @@ public class UserService {
 
 
 
-    public void registerUser(UserRegistrationRequest userRegistrationRequest, HttpServletRequest httpServletRequest){
+    public UserRegisterResponse registerUser(UserRegistrationRequest userRegistrationRequest, HttpServletRequest httpServletRequest){
         ObjectMapper objectMapper = new ObjectMapper();
         User user = objectMapper.convertValue(userRegistrationRequest, User.class);
         user.setRole("ROLE_USER");
@@ -47,7 +48,10 @@ public class UserService {
   //      String url = "http://"+httpServletRequest.getHeader("host")+"/user/verify";
 //        verificationEmailService.sendVerificationEmail(url,userDto);
 
-
+        UserRegisterResponse userRegisterResponse = new UserRegisterResponse();
+        userRegisterResponse.setEmail(userRegistrationRequest.getEmail());
+        userRegisterResponse.setResponse("User Successfully Registered");
+        return userRegisterResponse;
     }
 
 
