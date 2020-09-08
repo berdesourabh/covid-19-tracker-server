@@ -1,27 +1,18 @@
 package com.covid.dashboard.util;
 
-import com.covid.dashboard.dto.Patient;
 import com.covid.dashboard.entity.User;
 import com.covid.dashboard.repository.UserRepository;
-import com.covid.dashboard.request.UserRegistrationRequest;
-import com.covid.dashboard.service.PhysicianService;
+import com.covid.dashboard.service.PatientService;
 import com.covid.dashboard.service.UserService;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.nio.file.Files;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -34,7 +25,7 @@ public class DummyUserUtil {
     private UserService userService;
 
     @Autowired
-    private PhysicianService physicianService;
+    private PatientService patientService;
 
     @Autowired
     private HttpServletRequest httpServletRequest;
