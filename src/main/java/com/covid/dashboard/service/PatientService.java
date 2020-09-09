@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PatientService {
@@ -70,4 +71,16 @@ public class PatientService {
     }
 
 
+    public com.covid.dashboard.dto.Patient getPatientById(int physicianId) {
+
+        Optional<Patient> patientById = patientRepository.findById(physicianId);
+        if(patientById.isPresent()){
+            Patient patient = patientById.get();
+            patient.getUser().setRole(null);
+            com.covid.dashboard.dto.Patient patient1 = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).convertValue(patient, com.covid.dashboard.dto.Patient.class);
+            return patient1;
+        }
+        return null;
+
+    }
 }

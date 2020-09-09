@@ -33,6 +33,11 @@ public class PatientController {
         return patientService.getAllPatientsByPhysician(physicianId);
     }
 
+    @RequestMapping(value = "/patients/{patientId}",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.GET)
+    public Patient getPatient(@PathVariable("patientId") int physicianId){
+        return patientService.getPatientById(physicianId);
+    }
+
     @RequestMapping(value = "/patients/pagination",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.GET)
     public PaginationResponse getAllPatientsByPhysician(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize){
         return patientService.getAllPatients(pageNumber,pageSize);
