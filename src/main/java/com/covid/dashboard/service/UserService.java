@@ -48,8 +48,8 @@ public class UserService {
         userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
         userDto.setVerificationCode(randomStr);
-  //      String url = "http://"+httpServletRequest.getHeader("host")+"/user/verify";
-//        verificationEmailService.sendVerificationEmail(url,userDto);
+        String url = "http://"+httpServletRequest.getHeader("host")+"/user/verify";
+        verificationEmailService.sendVerificationEmail(url,userDto);
 
         UserRegisterResponse userRegisterResponse = new UserRegisterResponse();
         userRegisterResponse.setEmail(userRegistrationRequest.getEmail());
