@@ -1,9 +1,6 @@
 package com.covid.dashboard.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 public class Patient {
@@ -17,6 +14,12 @@ public class Patient {
     private String symptoms;
 
     private boolean dead;
+
+    private String physicianId;
+
+    private String recovered;
+
+    private String reportStatus;
 
 
 }

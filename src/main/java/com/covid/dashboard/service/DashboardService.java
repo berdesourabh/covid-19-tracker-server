@@ -4,7 +4,6 @@ import com.covid.dashboard.dto.*;
 import com.covid.dashboard.entity.Patient;
 import com.covid.dashboard.repository.PatientRepository;
 import com.covid.dashboard.repository.RegionRepository;
-import com.covid.dashboard.repository.UserRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -83,9 +82,9 @@ public class DashboardService {
 
             CoronaData coronaData = new CoronaData();
             //patients = getCoronaPatientsByCountryAndStateAndCity(country, state, city);
-            long totalCoronaCases = patientRepository.countByCoronaPositiveAndUser_CountryAndUser_StateAndUser_city("Y",country,
+            long totalCoronaCases = patientRepository.countByRecoveredAndUser_CountryAndUser_StateAndUser_city("Y",country,
                     state,city);
-            long totalRecovered =patientRepository.countByCoronaPositiveAndUser_CountryAndUser_StateAndUser_city("N",country,
+            long totalRecovered =patientRepository.countByRecoveredAndUser_CountryAndUser_StateAndUser_city("Y",country,
                     state,city);
             long totalDeaths = patientRepository.countByDeadAndUser_CountryAndUser_StateAndUser_city(true,country,state,city);
             coronaData.setCoronaCases(totalCoronaCases);
@@ -112,8 +111,8 @@ public class DashboardService {
                 cityReport.setCityName(c);
                 CoronaData coronaData = new CoronaData();
 
-                long totalCoronaCases = patientRepository.countByCoronaPositiveAndUser_CountryAndUser_StateAndUser_city("Y",country,state,c);
-                long totalRecovered =patientRepository.countByCoronaPositiveAndUser_CountryAndUser_StateAndUser_city("N",country,
+                long totalCoronaCases = patientRepository.countByRecoveredAndUser_CountryAndUser_StateAndUser_city("Y",country,state,c);
+                long totalRecovered =patientRepository.countByRecoveredAndUser_CountryAndUser_StateAndUser_city("N",country,
                         state,c);
                 long totalDeaths = patientRepository.countByDeadAndUser_CountryAndUser_StateAndUser_city(true,country,state,c);
                 coronaData.setCoronaCases(totalCoronaCases);
@@ -184,6 +183,8 @@ public class DashboardService {
         coronaReport.setCountryReports(countryReports);
         return coronaReport;
     }
+
+
 
 
     private void updateParams(String params[], String country, String state, String city) {

@@ -1,5 +1,6 @@
 package com.covid.dashboard.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +25,7 @@ public class User {
 
     private String verificationCode;
 
+    @JsonIgnore
     private Patient patient;
 
 }

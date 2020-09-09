@@ -30,5 +30,12 @@ public class Patient {
     @Column
     private boolean dead;
 
+    @Column
+    private String recovered;
 
+    @Column
+    private String reportStatus;
+
+    @Column
+    private String physicianId;
 }

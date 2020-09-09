@@ -1,5 +1,6 @@
     package com.covid.dashboard.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,6 +43,7 @@ public class User {
     @Column
     private boolean enabled;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL,targetEntity = Patient.class)
     private Patient patient;
 }

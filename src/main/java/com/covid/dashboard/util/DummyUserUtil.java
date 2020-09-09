@@ -44,7 +44,7 @@ public class DummyUserUtil {
         Connection connection = jdbcTemplate.getDataSource().getConnection();
         connection.setAutoCommit(false);
         String userSql="insert into user (city, country, enabled, first_name, last_name, password, role, state, verification_code, email) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        String patientSql = "insert into patient(corona_positive,dead,symptoms,email,patient_id) values(?,?,?,?,?)";
+        String patientSql = "insert into patient(corona_positive,dead,symptoms,email,patient_id,recovered,report_status) values(?,?,?,?,?,?,?)";
         PreparedStatement preparedStatement = connection.prepareCall(userSql);
         PreparedStatement preparedStatement2 = connection.prepareCall(patientSql);
 
@@ -71,6 +71,7 @@ public class DummyUserUtil {
         Random random = new Random();
         List<User> userEntities = new ArrayList<>();
         String encodedPassword = passwordEncoder.encode("abc");
+        String roles[] = {"ROLE_PHYSICIAN","ROLE_PATIENT"};
         for(int i = 1;i<=100000;i++){
 
 
@@ -80,6 +81,8 @@ public class DummyUserUtil {
             int keyRand = random.nextInt(keys.length);
             String[] strings = statesMaps.get(keys[keyRand]);
             int valueRand = random.nextInt(strings.length);
+            int rolesRand = random.nextInt(roles.length);
+            String role = roles[rolesRand];
             RandomString randomString = new RandomString();
             String randomStr = randomString.make(60);
             preparedStatement.setString(1,strings[valueRand]);
@@ -88,7 +91,7 @@ public class DummyUserUtil {
             preparedStatement.setString(4,"kunal"+i);
             preparedStatement.setString(5,"Shah");
             preparedStatement.setString(6,encodedPassword);
-            preparedStatement.setString(7,"ROLE_USER");
+            preparedStatement.setString(7,role);
             preparedStatement.setString(8,(String)keys[keyRand]);
             preparedStatement.setString(9,randomStr);
             preparedStatement.setString(10,"abc"+i+"@gmail.com");
@@ -97,22 +100,31 @@ public class DummyUserUtil {
                preparedStatement.executeBatch();
            }
 
-            String post="N";
+        if(role.equals("ROLE_PATIENT")) {
+            String post = "N";
+            String recovered = "";
+            String reports = "";
             boolean dead = false;
-            if(random.nextBoolean()==true){
-                post="Y";
+            if (random.nextBoolean() == true) {
+                post = "Y";
                 dead = random.nextBoolean();
+            }else{
+                recovered = "Y";
+                reports = "POSITIVE";
             }
-            preparedStatement2.setString(1,post);
-            preparedStatement2.setBoolean(2,dead);
-            preparedStatement2.setString(3,"fever");
-            preparedStatement2.setString(4,"abc"+i+"@gmail.com");
-            preparedStatement2.setInt(5,i);
+            preparedStatement2.setString(1, post);
+            preparedStatement2.setBoolean(2, dead);
+            preparedStatement2.setString(3, "fever");
+            preparedStatement2.setString(4, "abc" + i + "@gmail.com");
+            preparedStatement2.setInt(5, i);
+            preparedStatement2.setString(6,recovered);
+            preparedStatement2.setString(7,reports);
+
             preparedStatement2.addBatch();
-            if(i%500==0){
+            if (i % 500 == 0) {
                 preparedStatement2.executeBatch();
             }
-
+        }
             /*Patient patient = new Patient();
             User user1  = new User();
             user1.setEmail("abc"+i+"@gmail.com");

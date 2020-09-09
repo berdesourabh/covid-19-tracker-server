@@ -1,5 +1,6 @@
 package com.covid.dashboard.controller;
 
+import com.covid.dashboard.dto.PaginationResponse;
 import com.covid.dashboard.dto.Patient;
 import com.covid.dashboard.dto.User;
 import com.covid.dashboard.service.PatientService;
@@ -17,14 +18,24 @@ public class PatientController {
     private PatientService patientService;
 
     @RequestMapping(value = "/patient",consumes = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.POST)
-    public void addCoronaPatient(@RequestBody User user){
-        patientService.addCoronaPatient(user);
+    public void addPatient(@RequestBody User user){
+        patientService.addPatient(user);
     }
 
 
     @RequestMapping(value = "/patient",consumes = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.PUT)
     public void updatePatientStatus(@RequestBody Patient patient){
         patientService.updatePatientStatus(patient);
+    }
+
+    @RequestMapping(value = "/patients/physician/{physicianId}",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.GET)
+    public List<Patient> getAllPatientsByPhysician(@PathVariable("physicianId") String physicianId){
+        return patientService.getAllPatientsByPhysician(physicianId);
+    }
+
+    @RequestMapping(value = "/patients/pagination",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.GET)
+    public PaginationResponse getAllPatientsByPhysician(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize){
+        return patientService.getAllPatients(pageNumber,pageSize);
     }
 
 

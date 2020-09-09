@@ -34,7 +34,7 @@ public class UserService {
     public UserRegisterResponse registerUser(UserRegistrationRequest userRegistrationRequest, HttpServletRequest httpServletRequest){
         ObjectMapper objectMapper = new ObjectMapper();
         User user = objectMapper.convertValue(userRegistrationRequest, User.class);
-        user.setRole("ROLE_USER");
+        user.setRole("ROLE_PHYSICIAN");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         RandomString randomString = new RandomString();
