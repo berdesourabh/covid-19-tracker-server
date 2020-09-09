@@ -24,4 +24,6 @@ public class User {
 
     private String verificationCode;
 
+    private Patient patient;
+
 }

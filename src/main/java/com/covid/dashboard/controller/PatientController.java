@@ -1,6 +1,7 @@
 package com.covid.dashboard.controller;
 
 import com.covid.dashboard.dto.Patient;
+import com.covid.dashboard.dto.User;
 import com.covid.dashboard.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,8 +17,8 @@ public class PatientController {
     private PatientService patientService;
 
     @RequestMapping(value = "/patient",consumes = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.POST)
-    public void addCoronaPatient(@RequestBody Patient patient){
-        patientService.addCoronaPatient(patient);
+    public void addCoronaPatient(@RequestBody User user){
+        patientService.addCoronaPatient(user);
     }
 
 
@@ -27,12 +28,7 @@ public class PatientController {
     }
 
 
-    @RequestMapping(value = "/patients",consumes = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.POST)
-    public void addCoronaPatients(@RequestBody List<Patient> patients){
 
-        patients.forEach(patient -> patientService.addCoronaPatient(patient));
-
-    }
 
 
 

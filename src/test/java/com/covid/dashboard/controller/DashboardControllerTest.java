@@ -90,7 +90,7 @@ class DashboardControllerTest {
         HttpEntity<String> patientRequestEntity = new HttpEntity<String>(patientJson, patientHeaders);
 
         restTemplate.exchange(
-                createURLWithPort("/physician/addPatient"),
+                createURLWithPort("/patient"),
                 HttpMethod.POST, patientRequestEntity, Void.class);
 
 

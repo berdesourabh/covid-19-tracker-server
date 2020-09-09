@@ -40,7 +40,7 @@ public class UserService {
         RandomString randomString = new RandomString();
         String randomStr = randomString.make(60);
         user.setVerificationCode(randomStr);
-        user.setEnabled(true);
+        user.setEnabled(false);
         userRepository.save(user);
 
         com.covid.dashboard.dto.User userDto = new com.covid.dashboard.dto.User();

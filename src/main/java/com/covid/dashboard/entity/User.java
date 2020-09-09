@@ -3,12 +3,9 @@
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-@Entity
+    @Entity
 @Table(name = "user")
 @Getter
 @Setter
@@ -44,4 +41,7 @@ public class User {
 
     @Column
     private boolean enabled;
+
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL,targetEntity = Patient.class)
+    private Patient patient;
 }
