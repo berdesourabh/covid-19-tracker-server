@@ -48,8 +48,9 @@ public class UserService {
         userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
         userDto.setVerificationCode(randomStr);
+        String redirectUrl = httpServletRequest.getHeader("origin")+"/login";
         String url = "http://"+httpServletRequest.getHeader("host")+"/user/verify";
-        verificationEmailService.sendVerificationEmail(url,userDto);
+        verificationEmailService.sendVerificationEmail(url,userDto,redirectUrl);
 
         UserRegisterResponse userRegisterResponse = new UserRegisterResponse();
         userRegisterResponse.setEmail(userRegistrationRequest.getEmail());
@@ -58,15 +59,15 @@ public class UserService {
     }
 
 
-    public String verifyUser(String verificationCode) {
+    public String verifyUser(String verificationCode,String redirectUrl) {
         String message = "";
         User user = userRepository.findUserByVerificationCode(verificationCode);
         if (user != null && user.isEnabled() == false) {
             user.setEnabled(true);
             userRepository.save(user);
-            return "Successfully Verified User";
+            return "<h1>Successfully Verified User</h1><br/>Please click on link to <a href='"+redirectUrl+"'>login</a>";
         }
-        return "User already verified";
+        return "<h1>User already verified</h1> <br/>Please click on link to <a href='"+redirectUrl+"'>login</a>";
     }
 
     public List<com.covid.dashboard.dto.User> getUsersStartWithFirstName(String name){

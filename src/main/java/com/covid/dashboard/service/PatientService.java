@@ -1,6 +1,7 @@
 package com.covid.dashboard.service;
 
 import com.covid.dashboard.dto.PaginationResponse;
+import com.covid.dashboard.dto.PatientRegistrationRequest;
 import com.covid.dashboard.dto.User;
 import com.covid.dashboard.entity.Patient;
 import com.covid.dashboard.repository.PatientRepository;
@@ -25,17 +26,33 @@ public class PatientService {
     @Autowired
     private UserRepository userRepository;
 
-    public void addPatient(User user){
-        User childUser = new User();
-        childUser.setEmail(user.getEmail());
-        user.getPatient().setUser(childUser);
+    public void addPatient(PatientRegistrationRequest patientRegistrationRequest){
+        User newUser = new User();
+        newUser.setEmail(patientRegistrationRequest.getEmail());
+        newUser.setCountry(patientRegistrationRequest.getCountry());
+        newUser.setState(patientRegistrationRequest.getState());
+        newUser.setCity(patientRegistrationRequest.getCity());
+        newUser.setFirstName(patientRegistrationRequest.getFirstName());
+        newUser.setLastName(patientRegistrationRequest.getLastName());
+        com.covid.dashboard.dto.Patient patient = new com.covid.dashboard.dto.Patient();
 
-        Patient byUser_email = patientRepository.findByUser_email(user.getEmail());
+        User childUser = new User();
+        childUser.setEmail(patientRegistrationRequest.getEmail());
+
+        patient.setUser(childUser);
+        patient.setDead(false);
+        patient.setReportStatus("WAITING FOR RESULTS");
+        patient.setPhysicianId(patientRegistrationRequest.getPhysicianId());
+
+        newUser.setPatient(patient);
+
+        Patient byUser_email = patientRepository.findByUser_email(patientRegistrationRequest.getEmail());
         if(null==byUser_email) {
-            com.covid.dashboard.entity.User userEntity = new ObjectMapper().convertValue(user, com.covid.dashboard.entity.User.class);
-            userEntity.getPatient().setReportStatus("WAITING FOR RESULTS");
+            com.covid.dashboard.entity.User userEntity = new ObjectMapper().convertValue(newUser, com.covid.dashboard.entity.User.class);
+            Patient patientEntity = new ObjectMapper().convertValue(patient, Patient.class);
             userEntity.setEnabled(false);
             userEntity.setRole("ROLE_PATIENT");
+            userEntity.setPatient(patientEntity);
             userEntity = userRepository.save(userEntity);
         }
 

@@ -36,6 +36,10 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
 
     long countByCoronaPositiveAndUser_Country(String coronaPositive, String country);
     long countByCoronaPositiveAndUser_CountryAndUser_State(String coronaPositive, String country, String state);
+    long countByCoronaPositiveAndUser_CountryAndUser_StateAndUser_City(String coronaPositive, String country, String state,String city);
+
+    long countByRecoveredAndUser_Country(String recovered, String country);
+    long countByRecoveredAndUser_CountryAndUser_State(String recovered, String country, String state);
     long countByRecoveredAndUser_CountryAndUser_StateAndUser_city(String recovered, String country, String state, String city);
 
     long countByDeadAndUser_Country(boolean dead,String country);

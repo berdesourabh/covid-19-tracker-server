@@ -37,8 +37,8 @@ public class UserController {
 
 
     @RequestMapping(value = "/verify",method = RequestMethod.GET)
-    public String verifyUser(@RequestParam("code")String code){
-        return userService.verifyUser(code);
+    public String verifyUser(@RequestParam("code")String code,@RequestParam("redirectUrl")String redirectUrl){
+        return userService.verifyUser(code,redirectUrl);
     }
 
 

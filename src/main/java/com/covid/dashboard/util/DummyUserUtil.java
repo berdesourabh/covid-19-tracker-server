@@ -72,7 +72,7 @@ public class DummyUserUtil {
         List<User> userEntities = new ArrayList<>();
         String encodedPassword = passwordEncoder.encode("abc");
         String roles[] = {"ROLE_PHYSICIAN","ROLE_PATIENT"};
-        for(int i = 1;i<=100000;i++){
+        for(int i = 1;i<=10;i++){
 
 
             int rd = random.nextInt(countries.length);

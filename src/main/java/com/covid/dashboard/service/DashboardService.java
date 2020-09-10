@@ -82,7 +82,7 @@ public class DashboardService {
 
             CoronaData coronaData = new CoronaData();
             //patients = getCoronaPatientsByCountryAndStateAndCity(country, state, city);
-            long totalCoronaCases = patientRepository.countByRecoveredAndUser_CountryAndUser_StateAndUser_city("Y",country,
+            long totalCoronaCases = patientRepository.countByCoronaPositiveAndUser_CountryAndUser_StateAndUser_City("Y",country,
                     state,city);
             long totalRecovered =patientRepository.countByRecoveredAndUser_CountryAndUser_StateAndUser_city("Y",country,
                     state,city);
@@ -111,8 +111,8 @@ public class DashboardService {
                 cityReport.setCityName(c);
                 CoronaData coronaData = new CoronaData();
 
-                long totalCoronaCases = patientRepository.countByRecoveredAndUser_CountryAndUser_StateAndUser_city("Y",country,state,c);
-                long totalRecovered =patientRepository.countByRecoveredAndUser_CountryAndUser_StateAndUser_city("N",country,
+                long totalCoronaCases = patientRepository.countByCoronaPositiveAndUser_CountryAndUser_StateAndUser_City("Y",country,state,c);
+                long totalRecovered =patientRepository.countByRecoveredAndUser_CountryAndUser_StateAndUser_city("Y",country,
                         state,c);
                 long totalDeaths = patientRepository.countByDeadAndUser_CountryAndUser_StateAndUser_city(true,country,state,c);
                 coronaData.setCoronaCases(totalCoronaCases);
@@ -140,7 +140,7 @@ public class DashboardService {
                     countryReport.setName(c);
                     CoronaData coronaData = new CoronaData();
                     long totalCoronaCases = patientRepository.countByCoronaPositiveAndUser_Country("Y",c);
-                    long totalRecovered =patientRepository.countByCoronaPositiveAndUser_Country("N",c);
+                    long totalRecovered =patientRepository.countByRecoveredAndUser_Country("Y",c);
                     long totalDeaths = patientRepository.countByDeadAndUser_Country(true,c);
                     coronaData.setCoronaCases(totalCoronaCases);
                     coronaData.setTotalRecovered(totalRecovered);
@@ -164,7 +164,7 @@ public class DashboardService {
                     CoronaData coronaData = new CoronaData();
 
                     long totalCoronaCases = patientRepository.countByCoronaPositiveAndUser_CountryAndUser_State("Y",country,s);
-                    long totalRecovered =patientRepository.countByCoronaPositiveAndUser_CountryAndUser_State("N",country,s);
+                    long totalRecovered =patientRepository.countByRecoveredAndUser_CountryAndUser_State("Y",country,s);
                     long totalDeaths = patientRepository.countByDeadAndUser_CountryAndUser_State(true,country,s);
                     coronaData.setCoronaCases(totalCoronaCases);
                     coronaData.setTotalRecovered(totalRecovered);

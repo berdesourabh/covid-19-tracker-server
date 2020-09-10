@@ -18,11 +18,11 @@ public class VerificationEmailService {
     private JavaMailSender javaMailSender;
 
 
-    public void sendVerificationEmail(String url, User user){
+    public void sendVerificationEmail(String url, User user,String redirectUrl){
         String subject = "Please verify your registration";
         String senderName = "Covid Tracker Team";
         String mailContent = "<p>Dear "+user.getFirstName()+" "+user.getLastName()+",</p>" ;
-        url +="?code="+user.getVerificationCode();
+        url +="?code="+user.getVerificationCode()+"&&redirectUrl="+redirectUrl;
         mailContent += "<p>Please click the link below to verify your registration</p>";
         mailContent += "<h2><a href=\""+ url +"\">VERIFY</a></h2>";
         mailContent += "<p>Thank you</p><br>Covid Tracker Team";
