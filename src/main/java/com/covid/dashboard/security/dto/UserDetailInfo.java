@@ -11,6 +11,8 @@ public class UserDetailInfo implements UserDetails {
     private String username;
     private String password;
     private boolean enabled;
+    private String firstName;
+    private String lastName;
     private Collection<? extends GrantedAuthority> authorities;
 
     @Override
@@ -62,5 +64,21 @@ public class UserDetailInfo implements UserDetails {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
